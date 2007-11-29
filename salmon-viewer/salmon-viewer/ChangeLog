@@ -1,0 +1,7 @@
+2007-11-28  Scott Ellington <scott.ellington@gmail.com> 
+
+	* ThreeDSFile.cs: remove warning
+	* salmon-viewer.mdp: ?	
+	* GLViewer.cs: notify user that a file must be provided as a parameter
+	* Makefile: add
+

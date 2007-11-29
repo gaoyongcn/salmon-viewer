@@ -1,0 +1,46 @@
+<CombineEntry name="Packages" fileversion="2.0" ctype="PackagingProject">
+  <Packages>
+    <Package name="MonoDevelop Project Model Sources">
+      <Builder rootEntry="salmon-viewer.mds" targetFile="salmon-viewer-mds.tar.gz" format="MonoDevelop.Projects.MonoDevelopFileFormat" ctype="SourcesZipPackageBuilder">
+        <ChildEntries>
+          <Entry>salmon-viewer/salmon-viewer.mdp</Entry>
+        </ChildEntries>
+      </Builder>
+    </Package>
+    <Package name="SharpDevelop 1.0 Project Model Sources">
+      <Builder rootEntry="salmon-viewer.mds" targetFile="salmon-viewer-cmbx.tar.gz" format="MonoDevelop.Projects.SharpDevelopFileFormat" ctype="SourcesZipPackageBuilder">
+        <ChildEntries>
+          <Entry>salmon-viewer/salmon-viewer.mdp</Entry>
+        </ChildEntries>
+      </Builder>
+    </Package>
+    <Package name="Visual Studio .NET 2005 Sources">
+      <Builder rootEntry="salmon-viewer.mds" targetFile="salmon-viewer-sln.tar.gz" format="MonoDevelop.Prj2Make.MSBuildFileFormat" ctype="SourcesZipPackageBuilder">
+        <ChildEntries>
+          <Entry>salmon-viewer/salmon-viewer.mdp</Entry>
+        </ChildEntries>
+      </Builder>
+    </Package>
+    <Package name="Linux Binaries">
+      <Builder rootEntry="salmon-viewer.mds" targetFile="salmon-viewer-linux.tar.gz" platform="Linux" ctype="BinariesZipPackageBuilder">
+        <ChildEntries>
+          <Entry>salmon-viewer/salmon-viewer.mdp</Entry>
+        </ChildEntries>
+      </Builder>
+    </Package>
+    <Package name="Windows Binaries">
+      <Builder rootEntry="salmon-viewer.mds" targetFile="salmon-viewer-windows.tar.gz" platform="Windows" ctype="BinariesZipPackageBuilder">
+        <ChildEntries>
+          <Entry>salmon-viewer/salmon-viewer.mdp</Entry>
+        </ChildEntries>
+      </Builder>
+    </Package>
+    <Package name="Tarball">
+      <Builder rootEntry="salmon-viewer.mds" TargetDirectory="/home/scottell/salmon-viewer/salmon-viewer" DefaultConfiguration="Debug" ctype="TarballDeployTarget">
+        <ChildEntries>
+          <Entry>salmon-viewer/salmon-viewer.mdp</Entry>
+        </ChildEntries>
+      </Builder>
+    </Package>
+  </Packages>
+</CombineEntry>

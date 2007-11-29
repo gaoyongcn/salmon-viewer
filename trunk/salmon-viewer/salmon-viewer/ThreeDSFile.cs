@@ -243,10 +243,10 @@ namespace ThreeD
 							//fStream = new FileStream(base_dir + name, FileMode.Open, FileAccess.Read);
 							bmp = new Bitmap ( base_dir + name );
 						}
-						catch ( Exception e )
+						catch ( Exception ex )
 						{
 							// couldn't find the file
-							Console.WriteLine ( "	ERROR: could not load file '{0}'", base_dir + name );
+							Console.WriteLine ( "	ERROR: could not load file '{0}': {1}", base_dir + name, ex.Message );
 							break;
 						}
 

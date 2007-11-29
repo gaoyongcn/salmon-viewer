@@ -1,0 +1,4 @@
+2007-11-28  Scott Ellington <scott.ellington@gmail.com> 
+
+	* Makefile.include, configure, rules.make, Makefile: add
+

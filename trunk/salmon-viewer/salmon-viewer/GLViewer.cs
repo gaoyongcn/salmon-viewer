@@ -56,7 +56,12 @@ namespace ThreeD
 
 			Init();
 			
-			if (argv.Length <= 0) return;
+			if (argv.Length <= 0) 
+			{
+				Console.WriteLine("No file was specified.");
+				
+				return;
+			}
 			
 			model = new ThreeDSFile( argv[0] ).ThreeDSModel;
 

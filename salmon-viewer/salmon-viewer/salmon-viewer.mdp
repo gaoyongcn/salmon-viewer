@@ -17,7 +17,7 @@
     <File name="AUTHORS" subtype="Code" buildaction="Nothing" />
     <File name="COPYING" subtype="Code" buildaction="Nothing" />
     <File name="Entity.cs" subtype="Code" buildaction="Compile" />
-    <File name="GLViewer.cs" subtype="Code" buildaction="Compile" />
+    <File name="Program.cs" subtype="Code" buildaction="Compile" />
     <File name="Material.cs" subtype="Code" buildaction="Compile" />
     <File name="Matrix.cs" subtype="Code" buildaction="Compile" />
     <File name="Model.cs" subtype="Code" buildaction="Compile" />

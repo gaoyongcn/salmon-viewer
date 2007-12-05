@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 using System.Drawing;
 
-namespace ThreeD
+namespace SalmonViewer
 {
 	public class ThreeDSFile
 	{	

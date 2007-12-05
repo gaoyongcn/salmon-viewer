@@ -1,5 +1,9 @@
 2007-12-04  Scott Ellington <scott.ellington@gmail.com> 
 
+	* Makefile: up
+
+2007-12-04  Scott Ellington <scott.ellington@gmail.com> 
+
 	* Material.cs: fix texture shading
 	* ThreeDSFile.cs, Program.cs: clean up
 

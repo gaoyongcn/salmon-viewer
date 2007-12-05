@@ -64,7 +64,7 @@ TAO_FREEGLUT_DLL_CONFIG = $(BUILD_DIR)/Tao.FreeGlut.dll.config
 
 FILES = \
 	Entity.cs \
-	GLViewer.cs \
+	Program.cs \
 	Material.cs \
 	Matrix.cs \
 	Model.cs \

@@ -1,5 +1,10 @@
 2007-12-04  Scott Ellington <scott.ellington@gmail.com> 
 
+	* Material.cs: fix texture shading
+	* ThreeDSFile.cs, Program.cs: clean up
+
+2007-12-04  Scott Ellington <scott.ellington@gmail.com> 
+
 	* Entity.cs, GLViewer.cs, Material.cs, ThreeDSFile.cs, Model.cs, Vector.cs,
 	  salmon-viewer.mdp, Triangle.cs: rename namespace
 	* Program.cs: rename namespace, clean up

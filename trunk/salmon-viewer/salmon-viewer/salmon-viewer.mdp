@@ -1,4 +1,4 @@
-<Project name="salmon-viewer" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="salmon-viewer" fileversion="2.0" DefaultNamespace="SalmonViewer" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" assemblyKeyFile="." assembly="salmon-viewer" />

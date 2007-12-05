@@ -33,6 +33,7 @@ namespace SalmonViewer
 		public float[] Ambient = new float [] { 0.5f, 0.5f, 0.5f };
 		public float[] Diffuse = new float [] { 0.5f, 0.5f, 0.5f };
 		public float[] Specular = new float [] { 0.5f, 0.5f, 0.5f };
+
 		public int Shininess = 50;
 
 		int textureid = -1;
@@ -51,6 +52,7 @@ namespace SalmonViewer
 			Gl.glGenTextures(1, textures);
 			textureid = textures[0];
 			//Console.WriteLine ( "GL Texture number: {0}", textures [0] );
+			
     		Gl.glBindTexture( Gl.GL_TEXTURE_2D, textureid ); 
 
 			// repeat texture if neccessary
@@ -63,7 +65,9 @@ namespace SalmonViewer
 			//Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_NEAREST); 
 			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR_MIPMAP_NEAREST); 
 
-			Gl.glTexEnvf(Gl.GL_TEXTURE_ENV, Gl.GL_TEXTURE_ENV_MODE, Gl.GL_REPLACE); 
+			// use GL_MODULATE to mix color with texture
+			Gl.glTexEnvf(Gl.GL_TEXTURE_ENV, Gl.GL_TEXTURE_ENV_MODE, Gl.GL_MODULATE);
+			//Gl.glTexEnvf(Gl.GL_TEXTURE_ENV, Gl.GL_TEXTURE_ENV_MODE, Gl.GL_REPLACE); 
 			
 			// Finally we define the 2d texture
 			//Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, width, height, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, data);

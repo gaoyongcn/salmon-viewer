@@ -58,6 +58,8 @@ namespace SalmonViewer
 		
 #endregion
 		
+#region Main method		
+		
 		/// <summary>
 		/// Main method
 		/// </summary>
@@ -84,8 +86,15 @@ namespace SalmonViewer
 				return;
 			}
 			
-			// Load our 3DS model from the command line argument
-			model = new ThreeDSFile( argv[0] ).ThreeDSModel;
+			try
+			{
+				// Load our 3DS model from the command line argument
+				model = new ThreeDSFile( argv[0] ).Model;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("An Error occured: " + ex.Message);
+			}
 
 			// print viewer control keys to Console
 			PrintInstructions();
@@ -101,6 +110,10 @@ namespace SalmonViewer
 			// start loop and wait for user input
 			Glut.glutMainLoop();
 		}
+		
+#endregion
+		
+#region Helper methods
 
 		/// <summary>
 		/// Prints Viewer instructions to Console
@@ -334,5 +347,8 @@ namespace SalmonViewer
 				if (rot[i] >= 360 || rot[i] < -360)
 					rot[i] = 0;
 		}
+		
+#endregion
+
 	}
 }

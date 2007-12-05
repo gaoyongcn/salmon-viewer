@@ -1,3 +1,7 @@
+2007-12-04  Scott Ellington <scott.ellington@gmail.com> 
+
+	* salmon-viewer.mds: rename namespace
+
 2007-11-28  Scott Ellington <scott.ellington@gmail.com> 
 
 	* Makefile.include, configure, rules.make, Makefile: add

@@ -24,7 +24,7 @@
 
 using System;
 
-namespace ThreeD
+namespace SalmonViewer
 {
 	public struct Vector
 	{

@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ThreeD
+namespace SalmonViewer
 {
 	public class Model
 	{

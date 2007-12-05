@@ -25,7 +25,7 @@
 using System;
 using Tao.OpenGl;
 
-namespace ThreeD
+namespace SalmonViewer
 {
 	public class Material
 	{

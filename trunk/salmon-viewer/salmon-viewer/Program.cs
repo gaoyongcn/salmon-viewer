@@ -1,7 +1,7 @@
-// Title:	GLViewer.cs
+// Title:	Program.cs
 // Author: 	Scott Ellington <scott.ellington@gmail.com>
 //
-// Copyright (C) 2006 Scott Ellington and authors
+// Copyright (C) 2006-2007 Scott Ellington and authors
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -26,13 +26,23 @@ using System;
 using Tao.FreeGlut;
 using Tao.OpenGl;
 
-namespace ThreeD 
+namespace SalmonViewer 
 {
-    public sealed class GLViewer 
+	/// <summary>
+	/// Main class
+	/// </summary>
+    public sealed class Program 
 	{
+		
+#region Constants		
+		
 		// angle to radian
 		const double ATR = .01745;
 
+#endregion		
+		
+#region Vars		
+		
 		static int pace = 1;
 
 		static int winW = 400;
@@ -46,16 +56,27 @@ namespace ThreeD
 
 		static bool[] keydown = new bool [256];
 		
+#endregion
+		
+		/// <summary>
+		/// Main method
+		/// </summary>
+		/// <param name="argv">
+		/// A <see cref="System.String"/>
+		/// </param>
 		public static void Main (string[] argv) 
 		{
+			// instantiate GLUT for our windowing provider
 			Glut.glutInit();
 			//Glut.glutInitDisplayMode(Glut.GLUT_DOUBLE | Glut.GLUT_RGB | Glut.GLUT_ALPHA | Glut.GLUT_DEPTH);
 			Glut.glutInitDisplayMode(Glut.GLUT_DOUBLE | Glut.GLUT_RGB | Glut.GLUT_DEPTH);
 			Glut.glutInitWindowSize( winW, winH );
-			Glut.glutCreateWindow("GLViewer");
+			Glut.glutCreateWindow("Salmon Viewer");
 
+			// initialize our OpenGL parameters
 			Init();
 			
+			// if no arguments, show message
 			if (argv.Length <= 0) 
 			{
 				Console.WriteLine("No file was specified.");
@@ -63,22 +84,30 @@ namespace ThreeD
 				return;
 			}
 			
+			// Load our 3DS model from the command line argument
 			model = new ThreeDSFile( argv[0] ).ThreeDSModel;
 
+			// print viewer control keys to Console
 			PrintInstructions();
 			
+			// instantiate GLUT event handlers
 			Glut.glutDisplayFunc(new Glut.DisplayCallback(Display));
 			Glut.glutIdleFunc(new Glut.IdleCallback (Idle) );
 			Glut.glutKeyboardFunc(new Glut.KeyboardCallback(Keyboard));
 			Glut.glutKeyboardUpFunc(new Glut.KeyboardUpCallback(KeyboardUp));
 			Glut.glutReshapeFunc(new Glut.ReshapeCallback(Reshape));
 			Glut.glutMotionFunc (new Glut.MotionCallback (Motion) );
+			
+			// start loop and wait for user input
 			Glut.glutMainLoop();
 		}
 
+		/// <summary>
+		/// Prints Viewer instructions to Console
+		/// </summary>
 		static void PrintInstructions ()
 		{
-			string text = "GL Viewer commands \n" +
+			string text = "Salmon Viewer commands: \n" +
 				" w,s move forward and backward \n" +
 				" a,d turn left and right\n" +
 				" z,x move up and down\n" +
@@ -87,17 +116,29 @@ namespace ThreeD
 			Console.WriteLine ( text );
 		}
 		
+		/// <summary>
+		/// Initalizes OpenGL parameters
+		/// </summary>
 		private static void Init() 
 		{
+			// enable depth
 			Gl.glEnable ( Gl.GL_DEPTH_TEST );
+			
+			// enable fill
 			Gl.glPolygonMode ( Gl.GL_FRONT_AND_BACK, Gl.GL_FILL );	
 			//Gl.glPolygonMode ( Gl.GL_FRONT_AND_BACK, Gl.GL_LINE );
 
+			// set background to white
 			Gl.glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
+			
+			// smooth shading
 			Gl.glShadeModel ( Gl.GL_SMOOTH );
+			
+			// enable culling (improves performance i think)
 			Gl.glEnable(Gl.GL_CULL_FACE);
 			Gl.glCullFace(Gl.GL_BACK);
-			//Gl.glBlendFunc(Gl.GL_SRC_ALPHA_SATURATE, Gl.GL_ONE)sssss
+			
+			//Gl.glBlendFunc(Gl.GL_SRC_ALPHA_SATURATE, Gl.GL_ONE)
 
 			// enable lighting
 			Gl.glEnable( Gl.GL_LIGHT0 );
@@ -107,16 +148,22 @@ namespace ThreeD
 			//Gl.glEnable( Gl.GL_TEXTURE_2D );
 		}
 
+		/// <summary>
+		/// draws the scene
+		/// </summary>
 		private static void Display() 
 		{
+			// clear out the current OpenGL context
 			Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 			//Gl.glDisable(Gl.GL_BLEND);
 			//Gl.glDisable(Gl.GL_POLYGON_SMOOTH);
 
+			// create our view matrix and load into OpenGL
 			float[] matrix = Matrix.Transform ( rot[0], rot[1], rot[2], eye[0], eye[1], eye[2] );
 			matrix = Matrix.Inverse ( matrix );
 			Gl.glLoadMatrixf ( matrix );
 
+			// set the lighting
 			Gl.glLightfv( Gl.GL_LIGHT0, Gl.GL_POSITION, light);
 			
 			//draw floor
@@ -136,18 +183,50 @@ namespace ThreeD
 				Gl.glEnd ();
 			}*/
 			
+			// render our model
 			model.Render ();
 			
+			// flush out what in the OpenGL context
 			Gl.glFlush ();
+			
+			// we are double buffering
 			Glut.glutSwapBuffers ();
 		}
 
+		/// <summary>
+		/// Handles flagging keys as down.  
+		/// </summary>
+		/// <param name="key">
+		/// A <see cref="System.Byte"/>
+		/// </param>
+		/// <param name="x">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		/// <param name="y">
+		/// A <see cref="System.Int32"/>
+		/// </param>
 		private static void Keyboard(byte key, int x, int y) { keydown [ key ] = true; }
 		
+		/// <summary>
+		/// Handles unflagging keys
+		/// </summary>
+		/// <param name="key">
+		/// A <see cref="System.Byte"/>
+		/// </param>
+		/// <param name="x">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		/// <param name="y">
+		/// A <see cref="System.Int32"/>
+		/// </param>
 		private static void KeyboardUp(byte key, int x, int y) { keydown [ key ] = false; }
 
+		/// <summary>
+		/// Idle handler.  Occurs as often as the cpu will allow.
+		/// </summary>
 		static void Idle ()
 		{
+			// go through the keys and deal with user input
 			for ( int ii=0; ii < keydown.Length ; ii++ )
 			{
 				if ( keydown [ii] )
@@ -188,12 +267,22 @@ namespace ThreeD
 					}
 				}
 			}
-			//if ( !keydown[(int) ' '] && eye[1] > 0) eye[1]--;
-
+			
+			// render the model
 			Glut.glutPostRedisplay();	
 		}
 
-		private static void Reshape(int w, int h) {
+		/// <summary>
+		/// Handles a window resize
+		/// </summary>
+		/// <param name="w">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		/// <param name="h">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		private static void Reshape(int w, int h) 
+		{
 			Gl.glViewport(0, 0, w, h);
 			Gl.glMatrixMode(Gl.GL_PROJECTION);
 			Gl.glLoadIdentity();
@@ -204,22 +293,41 @@ namespace ThreeD
 		}
 
 		static bool started = false;
-		static int theX, theY;
+		static int lastX, lastY;
 
+		/// <summary>
+		/// handles mouse motion
+		/// </summary>
+		/// <param name="x">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		/// <param name="y">
+		/// A <see cref="System.Int32"/>
+		/// </param>
 		private static void Motion ( int x, int y )
 		{
+			// changes rotation
 			if (started && x > 0 && y > 0 && x < winW && y < winH)
 			{
-				rot[1] -= (float) (x-theX)/3;
-				rot[0] += (float) (y-theY)/3;
+				rot[1] -= (float) (x-lastX)/3;
+				rot[0] += (float) (y-lastY)/3;
 			}
 			else started = true;
-			theY = y;
-			theX = x;
+
+			// track last val
+			lastY = y;
+			lastX = x;
+			
+			// keep rotation values sane
 			Clamp ();
+
+			// redraw
 			Glut.glutPostRedisplay();	
 		}
 
+		/// <summary>
+		/// ensures rotation parameters stay within 360
+		/// </summary>
 		static void Clamp ()
 		{
 			for (int i = 0; i < 3; i ++)

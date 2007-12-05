@@ -1,7 +1,7 @@
 // Title:	ThreeDSFile.cs
 // Author: 	Scott Ellington <scott.ellington@gmail.com>
 //
-// Copyright (C) 2006 Scott Ellington and authors
+// Copyright (C) 2006-2007 Scott Ellington and authors
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -31,8 +31,15 @@ using System.Drawing;
 
 namespace SalmonViewer
 {
+	/// <summary>
+	/// 3ds file loader.
+	/// Binds materials directly into OpenGL
+	/// </summary>
 	public class ThreeDSFile
 	{	
+		
+#region Enums		
+		
 		enum Groups
 		{
 			C_PRIMARY      = 0x4D4D,
@@ -55,74 +62,103 @@ namespace SalmonViewer
 			C_OBJECT_UV		= 0x4140
 		}
 
-		class ThreeDSChunk
-		{
-			public ushort ID;
-			public uint Length;
-			public int BytesRead;
+#endregion		
+		
+#region Vars
 
-			public ThreeDSChunk ( BinaryReader reader )
-			{
-				// 2 byte ID
-				ID = reader.ReadUInt16();
-				//Console.WriteLine ("ID: {0}", ID.ToString("x"));
-
-				// 4 byte length
-				Length = reader.ReadUInt32 ();
-				//Console.WriteLine ("Length: {0}", Length);
-
-				// = 6
-				BytesRead = 6; 
-			}
-		}
-
+		Dictionary < string, Material > materials = new Dictionary < string, Material > ();
+		
+		string base_dir;
+		
 		BinaryReader reader;
 
+#endregion		
+		
 		Model model = new Model ();
-		public Model ThreeDSModel {
+		public Model Model {
 			get {
 				return model;
 			}
 		}
 		
-		Dictionary < string, Material > materials = new Dictionary < string, Material > ();
+		public int Version {
+			get {
+				return version;
+			}
+		}
+		int version = -1;
 		
-		string base_dir;
+#region Constructors		
 		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="file_name">
+		/// A <see cref="System.String"/>.  The path to the 3ds file
+		/// </param>
 		public ThreeDSFile ( string file_name )
 		{
-			base_dir =  new FileInfo ( file_name ).DirectoryName + "/";
+			if (string.IsNullOrEmpty(file_name))
+			{
+				throw new ArgumentNullException("file_name");
+			}
 			
-			FileStream file;
-			file = new FileStream(file_name, FileMode.Open, FileAccess.Read); 
+			if (!File.Exists(file_name))
+			{
+				throw new ArgumentException("3ds file could not be found", "file_name");
+			}
+				
+			// 3ds models can use additional files which are expected in the same directory
+			base_dir =  new FileInfo ( file_name ).DirectoryName + "/";
+		
+			FileStream file = null;
+			try
+			{
+				// create a binary stream from this file
+				file  = new FileStream(file_name, FileMode.Open, FileAccess.Read); 
+				reader = new BinaryReader ( file );
+				reader.BaseStream.Seek (0, SeekOrigin.Begin); 
 
-			reader = new BinaryReader ( file );
-			reader.BaseStream.Seek (0, SeekOrigin.Begin); 
+				// 3ds files are in chunks
+				// read the first one
+				ThreeDSChunk chunk = new ThreeDSChunk ( reader );
+				
+				if ( chunk.ID != (short) Groups.C_PRIMARY )
+				{
+					throw new FormatException ( "Not a proper 3DS file." );
+				}
 
-			ThreeDSChunk chunk = new ThreeDSChunk ( reader );
-			if ( chunk.ID != (short) Groups.C_PRIMARY )
-				throw new ApplicationException ( "Not a proper 3DS file." );
-
-			ProcessChunk ( chunk );
-
-			reader.Close ();
-			file.Close ();
+				// recursively process chunks
+				ProcessChunk ( chunk );
+			}
+			finally
+			{
+				// close up everything
+				if (reader != null) reader.Close ();
+				if (file != null) file.Close ();
+			}
 		}
 
+#endregion		
+		
+#region Helper methods
+		
 		void ProcessChunk ( ThreeDSChunk chunk )
 		{
+			// process chunks until there are none left
 			while ( chunk.BytesRead < chunk.Length )
 			{
+				// grab a chunk
 				ThreeDSChunk child = new ThreeDSChunk ( reader );
 
+				// process based on ID
 				switch ((Groups) child.ID)
 				{
 					case Groups.C_VERSION:
 
-						int version = reader.ReadInt32 ();
+						version = reader.ReadInt32 ();
 						child.BytesRead += 4;
-
-						Console.WriteLine ( "3DS File Version: {0}", version );
+					
 						break;
 
 					case Groups.C_OBJECTINFO:
@@ -140,15 +176,14 @@ namespace SalmonViewer
 					case Groups.C_MATERIAL:
 
 						ProcessMaterialChunk ( child );
-						//SkipChunk ( child );
+
 						break;
 
 					case Groups.C_OBJECT:
 
-						//SkipChunk ( child );
-						string name = ProcessString ( child );
-						Console.WriteLine ("OBJECT NAME: {0}", name);
-
+						// string name = 
+						ProcessString ( child );
+						
 						Entity e = ProcessObjectChunk ( child );
 						e.CalculateNormals ();
 						model.Entities.Add ( e );
@@ -163,6 +198,7 @@ namespace SalmonViewer
 				}
 
 				chunk.BytesRead += child.BytesRead;
+				
 				//Console.WriteLine ( "ID: {0} Length: {1} Read: {2}", chunk.ID.ToString("x"), chunk.Length , chunk.BytesRead );
 			}
 		}
@@ -181,7 +217,7 @@ namespace SalmonViewer
 					case Groups.C_MATNAME:
 
 						name = ProcessString ( child );
-						Console.WriteLine ( "Material: {0}", name );
+						
 						break;
 				
 					case Groups.C_MATAMBIENT:
@@ -202,14 +238,13 @@ namespace SalmonViewer
 					case Groups.C_MATSHININESS:
 
 						m.Shininess = ProcessPercentageChunk ( child );
-						//Console.WriteLine ( "SHININESS: {0}", m.Shininess );
+
 						break;
 						
 					case Groups.C_MATMAP:
 
 						ProcessPercentageChunk ( child );
 	
-						//SkipChunk ( child );
 						ProcessTexMapChunk ( child , m );
 						
 						break;
@@ -218,6 +253,7 @@ namespace SalmonViewer
 
 						SkipChunk ( child );
 						break;
+
 				}
 				chunk.BytesRead += child.BytesRead;
 			}
@@ -234,8 +270,10 @@ namespace SalmonViewer
 					case Groups.C_MATMAPFILE:
 
 						string name = ProcessString ( child );
-						Console.WriteLine ( "	Texture File: {0}", name );
+						//Console.WriteLine ( "	Texture File: {0}", name );
 
+						// use System.Drawing to try and load this image
+					
 						//FileStream fStream;
 						Bitmap bmp;
 						try 
@@ -250,7 +288,7 @@ namespace SalmonViewer
 							break;
 						}
 
-						// Flip image (needed so texture are the correct way around!)
+						// Flip image (needed so texture is the correct way around!)
 						bmp.RotateFlip(RotateFlipType.RotateNoneFlipY); 
 						
 						System.Drawing.Imaging.BitmapData imgData = bmp.LockBits ( new Rectangle(new Point(0, 0), bmp.Size), 
@@ -293,6 +331,7 @@ namespace SalmonViewer
 						fStream.Close();
 						m.BindTexture ( (int) biWidth, (int) biHeight, tex );
 						*/
+					
 						break;
 
 					default:
@@ -379,6 +418,7 @@ namespace SalmonViewer
 						   }
 						   */
 							SkipChunk ( child );
+					
 						break;
 
 					case Groups.C_OBJECT_UV:
@@ -481,12 +521,26 @@ namespace SalmonViewer
 			return idcs;
 		}
 
-		/*
-		   public static void Main (string[] argv)
-		   {
-		   if (argv.Length <= 0) return;
-		   new ThreeDSFile ( argv[0] );
-		   }
-		   */
+		class ThreeDSChunk
+		{
+			public ushort ID;
+			public uint Length;
+			public int BytesRead;
+
+			public ThreeDSChunk ( BinaryReader reader )
+			{
+				// 2 byte ID
+				ID = reader.ReadUInt16();
+
+				// 4 byte length
+				Length = reader.ReadUInt32 ();
+
+				// = 6
+				BytesRead = 6; 
+			}
+		}
+		
+#endregion
+		
 	}
 }

@@ -25,6 +25,7 @@
 using System;
 using Tao.FreeGlut;
 using Tao.OpenGl;
+using System.IO;
 
 namespace SalmonViewer 
 {
@@ -86,14 +87,26 @@ namespace SalmonViewer
 				return;
 			}
 			
-			try
+			switch (Path.GetExtension(argv[0]).ToLower())
 			{
-				// Load our 3DS model from the command line argument
-				model = new ThreeDSFile( argv[0] ).Model;
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("An Error occured: " + ex.Message);
+			case ".3ds":
+			
+				try
+				{
+					// Load our 3DS model from the command line argument
+					model = new ThreeDSFile( argv[0] ).Model;
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("An Error occured: " + ex.Message);
+				}
+				break;
+			case ".obj":
+				new ObjFile(argv[0]);
+				break;
+			default:
+				Console.WriteLine("Not a supported file type.");
+				break;
 			}
 
 			// print viewer control keys to Console

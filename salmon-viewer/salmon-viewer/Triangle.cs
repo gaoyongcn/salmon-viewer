@@ -28,20 +28,20 @@ namespace SalmonViewer
 {
 	public struct Triangle
 	{
-		public int vertex1;
-		public int vertex2;
-		public int vertex3;
+		public int Vertex1;
+		public int Vertex2;
+		public int Vertex3;
 
 		public Triangle ( int v1, int v2, int v3 )
 		{
-			vertex1 = v1;
-			vertex2 = v2;
-			vertex3 = v3;
+			Vertex1 = v1;
+			Vertex2 = v2;
+			Vertex3 = v3;
 		}
 
 		public override string ToString ()
 		{
-			return String.Format ( "v1: {0} v2: {1} v3: {2}", vertex1, vertex2, vertex3 );
+			return String.Format ( "v1: {0} v2: {1} v3: {2}", Vertex1, Vertex2, Vertex3 );
 		}
 	}
 }

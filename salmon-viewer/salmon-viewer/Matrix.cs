@@ -24,104 +24,107 @@
 
 using System;
 
-public class Matrix
+namespace SalmonViewer
 {
-	const double ATR = .01745;
-	
-	public static float[] GetIdentity ()
+	public class Matrix
 	{
-		return new float[] {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
-	}
-
-	public static float[] Inverse ( float[] m )
-	{
-		int swap;
-		float t;
-		float[,] temp = new float[4,4];
-		float[] inv = GetIdentity();
-
-		for (int i = 0; i < 4; i++)
-			for (int j = 0; j < 4; j++)
-				temp[i,j] = m[(i * 4) + j];
-
-		for (int i = 0; i < 4; i++)
+		const double ATR = .01745;
+		
+		public static float[] GetIdentity ()
 		{
-			// Look for largest element in column
-			swap = i;
-			for (int j = i + 1; j < 4; j++)
-				if (Math.Abs(temp[j,i]) > Math.Abs(temp[i,i]))
-					swap = j;
+			return new float[] {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
+		}
 
-			if (swap != i)
+		public static float[] Inverse ( float[] m )
+		{
+			int swap;
+			float t;
+			float[,] temp = new float[4,4];
+			float[] inv = GetIdentity();
+
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					temp[i,j] = m[(i * 4) + j];
+
+			for (int i = 0; i < 4; i++)
 			{
-				// Swap rows.
-				for (int k = 0; k < 4; k++)
-				{
-					t = temp[i,k];
-					temp[i,k] = temp[swap,k];
-					temp[swap,k] = t;
+				// Look for largest element in column
+				swap = i;
+				for (int j = i + 1; j < 4; j++)
+					if (Math.Abs(temp[j,i]) > Math.Abs(temp[i,i]))
+						swap = j;
 
-					t = inv[(i * 4) + k];
-					inv[(i * 4) + k] = inv[(swap * 4) + k];
-					inv[(swap * 4) + k] = t;
-				}
-			}
-			
-			if (temp[i,i] == 0)
-				throw new Exception ("Matrix is Math.Singular");
-
-			t = temp[i,i];
-			for (int k = 0; k < 4; k++)
-			{    
-				temp[i,k] /= t;
-				inv[(i * 4) + k] /= t;
-			}
-			for (int j = 0; j < 4; j++)
-			{
-				if (j != i)
+				if (swap != i)
 				{
-					t = temp[j,i];
+					// Swap rows.
 					for (int k = 0; k < 4; k++)
 					{
-						temp[j,k] -= temp[i,k] * t;
-						inv[(j * 4) + k] -= inv[(i * 4) + k] * t;
+						t = temp[i,k];
+						temp[i,k] = temp[swap,k];
+						temp[swap,k] = t;
+
+						t = inv[(i * 4) + k];
+						inv[(i * 4) + k] = inv[(swap * 4) + k];
+						inv[(swap * 4) + k] = t;
+					}
+				}
+				
+				if (temp[i,i] == 0)
+					throw new Exception ("Matrix is Math.Singular");
+
+				t = temp[i,i];
+				for (int k = 0; k < 4; k++)
+				{    
+					temp[i,k] /= t;
+					inv[(i * 4) + k] /= t;
+				}
+				for (int j = 0; j < 4; j++)
+				{
+					if (j != i)
+					{
+						t = temp[j,i];
+						for (int k = 0; k < 4; k++)
+						{
+							temp[j,k] -= temp[i,k] * t;
+							inv[(j * 4) + k] -= inv[(i * 4) + k] * t;
+						}
 					}
 				}
 			}
+			return inv;
 		}
-		return inv;
-	}
 
-	public static float[] Transform (float rotX, float rotY, float rotZ, float transX, float transY, float transZ )
-	{
-		float[] myMatrix = new float [16];
-		
-		float A,B,C,D,E,F,AD,BD;
-		A = (float) Math.Cos ( rotX * ATR );
-		B = (float) Math.Sin ( rotX * ATR );
-		C = (float) Math.Cos ( rotY * ATR );
-		D = (float) Math.Sin ( rotY * ATR );
-		E = (float) Math.Cos ( rotZ * ATR );
-		F = (float) Math.Sin ( rotZ * ATR );
+		public static float[] Transform (float rotX, float rotY, float rotZ, float transX, float transY, float transZ )
+		{
+			float[] myMatrix = new float [16];
+			
+			float A,B,C,D,E,F,AD,BD;
+			A = (float) Math.Cos ( rotX * ATR );
+			B = (float) Math.Sin ( rotX * ATR );
+			C = (float) Math.Cos ( rotY * ATR );
+			D = (float) Math.Sin ( rotY * ATR );
+			E = (float) Math.Cos ( rotZ * ATR );
+			F = (float) Math.Sin ( rotZ * ATR );
 
-		AD = A * D;
-		BD = B * D;
+			AD = A * D;
+			BD = B * D;
 
-		myMatrix[0]  =   C * E;
-		myMatrix[1]  =  -C * F;
-		myMatrix[2]  =  -D;
-		myMatrix[4]  = -BD * E + A * F;
-		myMatrix[5]  =  BD * F + A * E;
-		myMatrix[6]  =  -B * C;
-		myMatrix[8]  =  AD * E + B * F;
-		myMatrix[9]  = -AD * F + B * E;
-		myMatrix[10] =   A * C;
-		myMatrix[3] = myMatrix[7] = myMatrix[11] = 0;
-		myMatrix[12] = transX;
-		myMatrix[13] = transY;
-		myMatrix[14] = transZ;
-		myMatrix[15] =  1;
+			myMatrix[0]  =   C * E;
+			myMatrix[1]  =  -C * F;
+			myMatrix[2]  =  -D;
+			myMatrix[4]  = -BD * E + A * F;
+			myMatrix[5]  =  BD * F + A * E;
+			myMatrix[6]  =  -B * C;
+			myMatrix[8]  =  AD * E + B * F;
+			myMatrix[9]  = -AD * F + B * E;
+			myMatrix[10] =   A * C;
+			myMatrix[3] = myMatrix[7] = myMatrix[11] = 0;
+			myMatrix[12] = transX;
+			myMatrix[13] = transY;
+			myMatrix[14] = transZ;
+			myMatrix[15] =  1;
 
-		return myMatrix;
+			return myMatrix;
+		}
 	}
 }

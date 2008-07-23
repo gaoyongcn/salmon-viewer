@@ -39,7 +39,7 @@ namespace SalmonViewer
 		}
 	}
 	
-	public class Entity
+	public class Entity : IRenderable
 	{
 		// TODO: OO this
 		// fields should be private
@@ -57,6 +57,9 @@ namespace SalmonViewer
 		// The indices of the triangles which point to vertices
 		public Triangle[] indices;
 
+
+		public Quad[] quads;
+		
 		// The coordinates which map the texture onto the entity
 		public TexCoord[] texcoords;
 	
@@ -74,8 +77,8 @@ namespace SalmonViewer
 			{
 				Triangle tr = indices [ii];
 				
-				Vector v1 = vertices [ tr.vertex1 ] - vertices  [ tr.vertex2 ];
-				Vector v2 = vertices [ tr.vertex2 ] - vertices  [ tr.vertex3 ];
+				Vector v1 = vertices [ tr.Vertex1 ] - vertices  [ tr.Vertex2 ];
+				Vector v2 = vertices [ tr.Vertex2 ] - vertices  [ tr.Vertex3 ];
 
 				temps [ii] = v1.CrossProduct ( v2 );
 				//Console.Write ("I");
@@ -89,7 +92,7 @@ namespace SalmonViewer
 				for ( int jj = 0; jj < indices.Length ; jj++ )
 				{
 					Triangle tr = indices [jj];
-					if ( tr.vertex1 == ii || tr.vertex2 == ii || tr.vertex3 == ii )
+					if ( tr.Vertex1 == ii || tr.Vertex2 == ii || tr.Vertex3 == ii )
 					{
 						v += temps [jj];
 						shared++;
@@ -122,19 +125,19 @@ namespace SalmonViewer
 			foreach ( Triangle tri in indices )
 			{ 
 				// Vertex 1
-				if (normalized) Gl.glNormal3d ( normals[tri.vertex1].X, normals[tri.vertex1].Y, normals[tri.vertex1].Z );
-				if ( material.TextureId >= 0 ) Gl.glTexCoord2f ( texcoords [ tri.vertex1 ].U, texcoords [ tri.vertex1 ].V);
-				Gl.glVertex3d ( vertices[tri.vertex1].X, vertices[tri.vertex1].Y, vertices[tri.vertex1].Z );
+				if (normalized) Gl.glNormal3d ( normals[tri.Vertex1].X, normals[tri.Vertex1].Y, normals[tri.Vertex1].Z );
+				if ( material.TextureId >= 0 ) Gl.glTexCoord2f ( texcoords [ tri.Vertex1 ].U, texcoords [ tri.Vertex1 ].V);
+				Gl.glVertex3d ( vertices[tri.Vertex1].X, vertices[tri.Vertex1].Y, vertices[tri.Vertex1].Z );
 
 				// Vertex 2
-				if (normalized) Gl.glNormal3d ( normals[tri.vertex2].X, normals[tri.vertex2].Y, normals[tri.vertex2].Z );
-				if ( material.TextureId >= 0 ) Gl.glTexCoord2f ( texcoords [ tri.vertex2 ].U, texcoords [ tri.vertex2 ].V);
-				Gl.glVertex3d ( vertices[tri.vertex2].X, vertices[tri.vertex2].Y, vertices[tri.vertex2].Z );
+				if (normalized) Gl.glNormal3d ( normals[tri.Vertex2].X, normals[tri.Vertex2].Y, normals[tri.Vertex2].Z );
+				if ( material.TextureId >= 0 ) Gl.glTexCoord2f ( texcoords [ tri.Vertex2 ].U, texcoords [ tri.Vertex2 ].V);
+				Gl.glVertex3d ( vertices[tri.Vertex2].X, vertices[tri.Vertex2].Y, vertices[tri.Vertex2].Z );
 
 				// Vertex 3
-				if (normalized) Gl.glNormal3d ( normals[tri.vertex3].X, normals[tri.vertex3].Y, normals[tri.vertex3].Z );
-				if ( material.TextureId >= 0 ) Gl.glTexCoord2f( texcoords [ tri.vertex3 ].U, texcoords [ tri.vertex3 ].V);
-				Gl.glVertex3d ( vertices[tri.vertex3].X, vertices[tri.vertex3].Y, vertices[tri.vertex3].Z );
+				if (normalized) Gl.glNormal3d ( normals[tri.Vertex3].X, normals[tri.Vertex3].Y, normals[tri.Vertex3].Z );
+				if ( material.TextureId >= 0 ) Gl.glTexCoord2f( texcoords [ tri.Vertex3 ].U, texcoords [ tri.Vertex3 ].V);
+				Gl.glVertex3d ( vertices[tri.Vertex3].X, vertices[tri.Vertex3].Y, vertices[tri.Vertex3].Z );
 			}
 			
 			Gl.glEnd();

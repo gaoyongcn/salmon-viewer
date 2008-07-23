@@ -27,7 +27,7 @@ using System.Collections.Generic;
 
 namespace SalmonViewer
 {
-	public class Model
+	public class Model : IRenderable
 	{
 		public List<Entity> Entities = new List<Entity> ();
 

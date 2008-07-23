@@ -2,11 +2,11 @@
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="salmon-viewer" configuration="Debug" />
-      <Entry build="True" name="Packages" configuration="" />
+      <Entry build="True" name="Packages" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="salmon-viewer" configuration="Release" />
-      <Entry build="True" name="Packages" configuration="" />
+      <Entry build="True" name="Packages" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="salmon-viewer" single="True">

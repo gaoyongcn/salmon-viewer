@@ -1,0 +1,4 @@
+2008-07-23  Scott Ellington <scott.ellington@gmail.com> 
+
+	* VectorTests.cs, SalmonViewer.Tests.csproj: commenting and unit tests
+

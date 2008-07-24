@@ -26,12 +26,25 @@ using System;
 
 namespace SalmonViewer
 {
+	/// <summary>
+	/// A spatial vector, or simply vector, is a geometric object that has both a magnitude and a direction. 
+	/// In three dimensional Euclidean space (or R3), 
+	/// vectors are identified with triples of numbers corresponding to the Cartesian coordinates of the endpoint (a,b,c)
+	/// http://en.wikipedia.org/wiki/Vector_(spatial)
+	/// </summary>
 	public struct Vector
 	{
+		
+#region Vars
+		
 		public double X;
 		public double Y;
 		public double Z;
 
+#endregion
+		
+#region ctors		
+		
 		public Vector ( double x, double y, double z )
 		{
 			X = x;
@@ -39,6 +52,19 @@ namespace SalmonViewer
 			Z = z;
 		}
 
+#endregion
+
+#region Public Methods
+		
+		/// <summary>
+		/// Returns a vector which is perpendicular to the two vectors
+		/// </summary>
+		/// <param name="v">
+		/// A <see cref="Vector"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="Vector"/>
+		/// </returns>
 		public Vector CrossProduct ( Vector v )
 		{
 			return new Vector (  Y * v.Z - Z * v.Y,
@@ -46,25 +72,57 @@ namespace SalmonViewer
 					X * v.Y - Y * v.X );
 		}
 
+		/// <summary>
+		/// returns a scalar quantity
+		/// </summary>
+		/// <param name="v">
+		/// A <see cref="Vector"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Double"/>
+		/// </returns>
 		public double DotProduct ( Vector v )
 		{ 
 			return X*v.X + Y*v.Y + Z*v.Z; 
 		}
 
+		/// <summary>
+		/// Creates a unit vector.  Which is a vector with a length of one; 
+		/// geometrically, it indicates a direction but no magnitude. 
+		/// http://en.wikipedia.org/wiki/Vector_(spatial)
+		/// </summary>
+		/// <returns>
+		/// A <see cref="Vector"/>
+		/// </returns>
 		public Vector Normalize ()
 		{
-			double d = Math.Sqrt(X * X + Y * Y + Z * Z);
+			double d = Length();
 			
 			if (d == 0) d = 1;
 			
 			return this / d;
 		}
 		
+		/// <summary>
+		/// Returns the length of the vector
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Double"/>
+		/// </returns>
+		public double Length()
+		{
+			return Math.Sqrt(DotProduct(this));
+		}
+		
+#endregion
+		
 		public override string ToString ()
 		{
 			return String.Format ( "X: {0} Y: {1} Z: {2}", X, Y, Z );
 		}
 
+#region Operator overloads
+		
 		public static Vector operator + ( Vector v1, Vector v2 )
 		{
 			Vector vr;
@@ -97,5 +155,7 @@ namespace SalmonViewer
 
 			return vr;
 		}
+		
+#endregion
 	}
 }

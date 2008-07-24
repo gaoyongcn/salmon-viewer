@@ -65,14 +65,20 @@ namespace SalmonViewer
 	
 		bool normalized = false;
 		
+		/// <summary>
+		/// Calculates the surface normals for all vertices.
+		/// A surface normal is a vector perpendicular to the tangent plane to that surface.
+		/// http://en.wikipedia.org/wiki/Surface_normal
+		/// </summary>
 		public void CalculateNormals ()
 		{
 			if ( indices == null ) return;
 			
+			// a normal is created for each vertex
 			normals = new Vector [vertices.Length];
 
+			// first let's create a surface normal for each triangle
 			Vector[] temps = new Vector [ indices.Length ];
-
 			for ( int ii=0 ; ii < indices.Length ; ii++ )
 			{
 				Triangle tr = indices [ii];
@@ -81,27 +87,33 @@ namespace SalmonViewer
 				Vector v2 = vertices [ tr.Vertex2 ] - vertices  [ tr.Vertex3 ];
 
 				temps [ii] = v1.CrossProduct ( v2 );
-				//Console.Write ("I");
 			}
-
+			
+			// then merge the triangle's vectors for each vertex
 			for ( int ii = 0; ii < vertices.Length ; ii++ )
 			{
+				// create a new origin vector (0,0,0)
 				Vector v = new Vector ();
-				int shared = 0;
-
+				
+				// we'll do this by looping through all of the triangles
 				for ( int jj = 0; jj < indices.Length ; jj++ )
 				{
 					Triangle tr = indices [jj];
+					
+					// and check if this triangle shares this vertex
 					if ( tr.Vertex1 == ii || tr.Vertex2 == ii || tr.Vertex3 == ii )
 					{
+						// if so, add this vector to our vector
+						// which has the effect of combining the two's magnitude and direction
+						// causing a smoothing effect on the entity
 						v += temps [jj];
-						shared++;
 					}
 				}
 
-				normals [ii] = (v / shared).Normalize ();
+				// finally normalize the vector
+				normals [ii] = v.Normalize ();
 			}
-			//Console.WriteLine ( "Normals Calculated!" );
+
 			normalized = true;
 		}
 

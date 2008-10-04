@@ -1,3 +1,7 @@
+2008-10-03  Scott Ellington <scott.ellington@gmail.com> 
+
+	
+
 2008-07-23  Scott Ellington <scott.ellington@gmail.com> 
 
 	* Entity.cs, Vector.cs: commenting and unit tests

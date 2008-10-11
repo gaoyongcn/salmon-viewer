@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalmonViewer", "salmon-viewer\SalmonViewer.csproj", "{B03EB557-03C1-43BA-976A-8DAECC643948}"
 EndProject
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Packages", "Packages.mdproj", "{96F543BF-8530-4A9D-8B51-A00E506471D5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalmonViewer.Tests", "SalmonViewer.Tests\SalmonViewer.Tests.csproj", "{677449AF-E4F5-478C-B88A-E0CC259E4521}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{677449AF-E4F5-478C-B88A-E0CC259E4521}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{677449AF-E4F5-478C-B88A-E0CC259E4521}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{677449AF-E4F5-478C-B88A-E0CC259E4521}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96F543BF-8530-4A9D-8B51-A00E506471D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96F543BF-8530-4A9D-8B51-A00E506471D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96F543BF-8530-4A9D-8B51-A00E506471D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96F543BF-8530-4A9D-8B51-A00E506471D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B03EB557-03C1-43BA-976A-8DAECC643948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B03EB557-03C1-43BA-976A-8DAECC643948}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B03EB557-03C1-43BA-976A-8DAECC643948}.Release|Any CPU.ActiveCfg = Release|Any CPU

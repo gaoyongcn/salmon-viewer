@@ -46,6 +46,8 @@ namespace SalmonViewer
 		// constructor with verts and faces
 		// normalize in ctor
 		
+		int glListNo = -1;
+		
 		public Material material = new Material ();
 		
 		// The stored vertices 
@@ -120,19 +122,33 @@ namespace SalmonViewer
 		public void Render ()
 		{
 			if ( indices == null ) return;
+			
+			// use a GlList for performance
+			if (glListNo >= 0)
+			{
+				Gl.glCallList(glListNo);
+				return;
+			}
+			
+			// first run we create the glList and manually render our entity
+			
+			glListNo = Gl.glGenLists(1);
+			Gl.glNewList(glListNo, Gl.GL_COMPILE);
 
+			// set up light properties
 			Gl.glMaterialfv (Gl.GL_FRONT_AND_BACK, Gl.GL_AMBIENT, material.Ambient);
 			Gl.glMaterialfv (Gl.GL_FRONT_AND_BACK, Gl.GL_DIFFUSE, material.Diffuse);
 			Gl.glMaterialfv (Gl.GL_FRONT_AND_BACK, Gl.GL_SPECULAR, material.Specular);
 			Gl.glMaterialf (Gl.GL_FRONT_AND_BACK, Gl.GL_SHININESS, material.Shininess);
-				
+	
+			// if we have a texture, bind it
 			if (material.TextureId >= 0 ) 
 			{
 				Gl.glBindTexture ( Gl.GL_TEXTURE_2D, material.TextureId ); 
 				Gl.glEnable( Gl.GL_TEXTURE_2D );
 			}
 
-			// Draw every triangle in the entity
+			// Draw every triangle in the entity, it's normal, and it's material (if exists)
 			Gl.glBegin ( Gl.GL_TRIANGLES);		
 			foreach ( Triangle tri in indices )
 			{ 
@@ -154,7 +170,8 @@ namespace SalmonViewer
 			
 			Gl.glEnd();
 			Gl.glDisable( Gl.GL_TEXTURE_2D );
-			//Console.WriteLine ( Gl.glGetError () );
+			
+			Gl.glEndList();
 		}	
 	}
 }

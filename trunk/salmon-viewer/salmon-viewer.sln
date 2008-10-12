@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalmonViewer", "salmon-viewer\SalmonViewer.csproj", "{B03EB557-03C1-43BA-976A-8DAECC643948}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalmonViewer", "salmon-viewer\salmon-viewer.csproj", "{B03EB557-03C1-43BA-976A-8DAECC643948}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalmonViewer.Tests", "SalmonViewer.Tests\SalmonViewer.Tests.csproj", "{677449AF-E4F5-478C-B88A-E0CC259E4521}"
 EndProject

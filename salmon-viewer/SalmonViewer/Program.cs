@@ -313,7 +313,7 @@ namespace SalmonViewer
 			Gl.glMatrixMode(Gl.GL_PROJECTION);
 			Gl.glLoadIdentity();
 			//Glu.gluPerspective(30.0, (float) w / (float) h, 1.0, 20.0);
-			Glu.gluPerspective (90, winW / winH, 1, 9999);
+			Glu.gluPerspective (90, Convert.ToDouble(winW) / Convert.ToDouble(winH), 1, 9999);
 			Gl.glMatrixMode(Gl.GL_MODELVIEW);
 			Gl.glLoadIdentity();
 		}

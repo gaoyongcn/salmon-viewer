@@ -1,5 +1,9 @@
 2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
 
+	* SalmonViewer.csproj: add freeglut license to output
+
+2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
+
 	* lib/freeglut.dll:
 	* SalmonViewer.csproj:
 	* Tao.OpenGl.dll.config:

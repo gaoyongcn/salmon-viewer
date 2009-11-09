@@ -1,8 +1,14 @@
 2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
 
+	* ChangeLog: fix
+
+	* Program.cs: add rotation
+
+2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
+
 	* Program.cs: fix centering of eye on model
 
-2009-11-09  scottell  <${AuthorEmail}>
+2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
 
 	* Program.cs:
 	* ThreeDSFile.cs:

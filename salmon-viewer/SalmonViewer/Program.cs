@@ -50,12 +50,16 @@ namespace SalmonViewer
 		static int winH = 400;
 
 		static Model model;
+		static ThreeDSFile file;
 
 		static float[] rot = new float[] {0,0,0}; /* Amount to rotate */
 		static float[] eye = new float[] {0,0,0}; /* Position of our eye or camera */
 		static float[] light = new float[] {200, 100, 40}; 
 
 		static bool[] keydown = new bool [256];
+		
+		static Vector modelRotation = new Vector(0,0,0);
+		static Vector modelCenter;
 		
 #endregion
 		
@@ -87,7 +91,7 @@ namespace SalmonViewer
 				return;
 			}
 			
-			ThreeDSFile file = null;
+			file = null;
 			switch (Path.GetExtension(argv[0]).ToLower())
 			{
 				case ".3ds":
@@ -112,6 +116,10 @@ namespace SalmonViewer
 					Console.WriteLine("Not a supported file type.");
 					break;
 			}
+			
+			modelCenter = new Vector((file.MaxX-file.MinX)/2+file.MinX,
+			                         (file.MaxY-file.MinY)/2+file.MinY,
+			                         (file.MaxZ-file.MinZ)/2+file.MinZ);
 
 			// move eye so model is entirely visible at startup
 
@@ -150,10 +158,13 @@ namespace SalmonViewer
 		static void PrintInstructions ()
 		{
 			string text = "Salmon Viewer commands: \n" +
-				" w,s move forward and backward \n" +
-				" a,d turn left and right\n" +
-				" z,x move up and down\n" +
-				" -,= move light source along x-axis\n" +
+				" 'w','s' move forward and backward \n" +
+				" 'a','d' turn left and right\n" +
+				" 'z','x' move up and down\n" +
+				" '-','=' move light source along x-axis\n" +
+				" '['.']' rotate object on x-axis\n" +
+				" ';',''' rotate object on y-axis\n" +
+				" '.','/' rotate object on z-axis\n" +
 				" click and drag the mouse to change direction";
 			Console.WriteLine ( text );
 		}
@@ -199,12 +210,21 @@ namespace SalmonViewer
 			Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 			//Gl.glDisable(Gl.GL_BLEND);
 			//Gl.glDisable(Gl.GL_POLYGON_SMOOTH);
-
+			
 			// create our view matrix and load into OpenGL
 			float[] matrix = Matrix.Transform ( rot[0], rot[1], rot[2], eye[0], eye[1], eye[2] );
 			matrix = Matrix.Inverse ( matrix );
 			Gl.glLoadMatrixf ( matrix );
 
+			// rotate object as needed
+			Gl.glTranslated(modelCenter.X, modelCenter.Y, modelCenter.Z);
+			Gl.glRotated(modelRotation.X,1,0,0); 
+			Gl.glRotated(modelRotation.Y,0,1,0);
+			Gl.glRotated(modelRotation.Z,0,0,1);
+			Gl.glTranslated(-modelCenter.X, -modelCenter.Y, -modelCenter.Z);
+			
+			//Gl.glPopMatrix();
+			
 			// set the lighting
 			Gl.glLightfv( Gl.GL_LIGHT0, Gl.GL_POSITION, light);
 			
@@ -300,6 +320,24 @@ namespace SalmonViewer
 							break;
 						case '-':
 							light[0]--;
+							break;
+						case '[':
+							modelRotation.X--;
+							break;
+						case ']':
+							modelRotation.X++;
+							break;
+						case ';':
+							modelRotation.Y--;
+							break;
+						case '\'':
+							modelRotation.Y++;
+							break;
+						case '/':
+							modelRotation.Z++;
+							break;
+						case '.':
+							modelRotation.Z--;
 							break;
 						case (char) 27:
 							Environment.Exit(0);

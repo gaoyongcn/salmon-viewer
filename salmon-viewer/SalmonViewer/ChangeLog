@@ -1,5 +1,14 @@
 2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
 
+	* lib/freeglut.dll:
+	* SalmonViewer.csproj:
+	* Tao.OpenGl.dll.config:
+	* Tao.FreeGlut.dll.config:
+	* lib/Tao.OpenGl.dll.config:
+	* lib/Tao.FreeGlut.dll.config: fix for VS.NET
+
+2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
+
 	* AssemblyInfo.cs: bump version
 
 	* lib/freeglut.dll:

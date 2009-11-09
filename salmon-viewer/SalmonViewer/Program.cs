@@ -87,6 +87,7 @@ namespace SalmonViewer
 				return;
 			}
 			
+			ThreeDSFile file = null;
 			switch (Path.GetExtension(argv[0]).ToLower())
 			{
 				case ".3ds":
@@ -94,7 +95,8 @@ namespace SalmonViewer
 					try
 					{
 						// Load our 3DS model from the command line argument
-						model = new ThreeDSFile( argv[0] ).Model;
+						file =  new ThreeDSFile( argv[0] );
+						model = file.Model;
 					}
 					catch (Exception ex)
 					{
@@ -111,6 +113,13 @@ namespace SalmonViewer
 					break;
 			}
 
+			double width = file.MaxX-file.MinX;
+			double height = file.MaxY-file.MinY;
+			eye[0] = Convert.ToSingle(width/2);
+			eye[1] = Convert.ToSingle(height/2);
+			eye[2] = Convert.ToSingle(file.MaxZ + (width > height ? width : height / 2) / Math.Tan((Math.PI/180) * 90/2));
+			Console.WriteLine ("x:{0} y:{1} z:{2}", eye[0], eye[1], eye[2]);
+			
 			// print viewer control keys to Console
 			PrintInstructions();
 			

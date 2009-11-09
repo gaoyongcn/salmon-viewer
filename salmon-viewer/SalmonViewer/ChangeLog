@@ -1,3 +1,10 @@
+2009-11-09  scottell  <${AuthorEmail}>
+
+	* Program.cs:
+	* ThreeDSFile.cs:
+	* SalmonViewer.csproj: hackish attempt at getting the model in
+	view at startup
+
 2008-10-23  Scott Ellington <scott.ellington@gmail.com> 
 
 	* Program.cs: fix gluPerspective aspect bug

@@ -18,14 +18,13 @@ Global
 		{EB9EB542-195E-40E1-9376-B9996FD150D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB9EB542-195E-40E1-9376-B9996FD150D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		name = salmon-viewer
-		version = 0.1
-		StartupItem = SalmonViewer.Tests\SalmonViewer.Tests.csproj
+		StartupItem = SalmonViewer\SalmonViewer.csproj
 		MonoDevelop.ChangeLogAddIn.ChangeLogInfo = $0
 		$0.policy = OneChangeLogInProjectRootDirectory
+		name = salmon-viewer
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

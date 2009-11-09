@@ -71,7 +71,9 @@ namespace SalmonViewer
 		string base_dir;
 		
 		BinaryReader reader;
-
+		
+		double maxX, maxY, maxZ, minX, minY, minZ;
+		
 #endregion		
 		
 		Model model = new Model ();
@@ -86,6 +88,43 @@ namespace SalmonViewer
 				return version;
 			}
 		}
+
+		public double MaxX {
+			get {
+				return maxX;
+			}
+		}
+
+		public double MaxY {
+			get {
+				return maxY;
+			}
+		}
+
+		public double MaxZ {
+			get {
+				return maxZ;
+			}
+		}
+
+		public double MinX {
+			get {
+				return minX;
+			}
+		}
+
+		public double MinY {
+			get {
+				return minY;
+			}
+		}
+
+		public double MinZ {
+			get {
+				return minZ;
+			}
+		}
+		
 		int version = -1;
 		
 #region Constructors		
@@ -110,6 +149,9 @@ namespace SalmonViewer
 				
 			// 3ds models can use additional files which are expected in the same directory
 			base_dir =  new FileInfo ( file_name ).DirectoryName + "/";
+			
+			maxX = maxY = maxZ = double.MinValue;
+			minX = minY = minZ = double.MaxValue;
 		
 			FileStream file = null;
 			try
@@ -136,7 +178,7 @@ namespace SalmonViewer
 				// close up everything
 				if (reader != null) reader.Close ();
 				if (file != null) file.Close ();
-			}
+			}			
 		}
 
 #endregion		
@@ -484,7 +526,18 @@ namespace SalmonViewer
 				float f2 = reader.ReadSingle();
 				float f3 = reader.ReadSingle();
 
-				verts[ii] = new Vector ( f1, f3, -f2 );
+				Vector v = new Vector ( f1, f3, -f2 );
+				
+				// track the boundaries of this model
+				if (v.X > maxX) maxX = v.X;
+				if (v.Y > maxY) maxY = v.Y;
+				if (v.Z > maxZ) maxZ = v.Z;
+				
+				if (v.X < minX) minX = v.X;
+				if (v.Y < minY) minY = v.Y;
+				if (v.Z < minZ) minZ = v.Z;
+				
+				verts[ii] = v;
 				//Console.WriteLine ( verts [ii] );
 			}
 

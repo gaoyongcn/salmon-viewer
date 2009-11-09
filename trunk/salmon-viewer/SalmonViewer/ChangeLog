@@ -1,3 +1,7 @@
+2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
+
+	* Program.cs: fix centering of eye on model
+
 2009-11-09  scottell  <${AuthorEmail}>
 
 	* Program.cs:

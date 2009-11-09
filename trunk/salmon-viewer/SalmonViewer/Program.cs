@@ -113,13 +113,18 @@ namespace SalmonViewer
 					break;
 			}
 
+			// move eye so model is entirely visible at startup
+
+			// center x/y at model's center x/y
 			double width = file.MaxX-file.MinX;
 			double height = file.MaxY-file.MinY;
-			eye[0] = Convert.ToSingle(width/2);
-			eye[1] = Convert.ToSingle(height/2);
-			eye[2] = Convert.ToSingle(file.MaxZ + (width > height ? width : height / 2) / Math.Tan((Math.PI/180) * 90/2));
-			Console.WriteLine ("x:{0} y:{1} z:{2}", eye[0], eye[1], eye[2]);
+			eye[0] = Convert.ToSingle(file.MinX+width/2);
+			eye[1] = Convert.ToSingle(file.MinY+height/2);
 			
+			// use trigonometry to calculate the z value that exposes the model
+			eye[2] = Convert.ToSingle(file.MaxZ + (width > height ? width : height / 2) / 
+			                          Math.Tan((Math.PI/180) * 90/2));
+
 			// print viewer control keys to Console
 			PrintInstructions();
 			

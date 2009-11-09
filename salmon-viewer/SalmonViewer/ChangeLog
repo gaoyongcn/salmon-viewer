@@ -1,5 +1,12 @@
 2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
 
+	* AssemblyInfo.cs: bump version
+
+	* lib/freeglut.dll:
+	* SalmonViewer.csproj: add win freeglut.dll
+
+2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
+
 	* ChangeLog: fix
 
 	* Program.cs: add rotation

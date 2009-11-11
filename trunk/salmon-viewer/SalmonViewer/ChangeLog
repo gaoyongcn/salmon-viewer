@@ -1,3 +1,7 @@
+2009-11-11  Scott Ellington  <scott.ellington@gmail.com>
+
+	* Program.cs: mistake in instructions
+
 2009-11-09  Scott Ellington  <scott.ellington@gmail.com>
 
 	* SalmonViewer.csproj: add freeglut license to output

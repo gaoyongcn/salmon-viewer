@@ -162,7 +162,7 @@ namespace SalmonViewer
 				" 'a','d' turn left and right\n" +
 				" 'z','x' move up and down\n" +
 				" '-','=' move light source along x-axis\n" +
-				" '['.']' rotate object on x-axis\n" +
+				" '[',']' rotate object on x-axis\n" +
 				" ';',''' rotate object on y-axis\n" +
 				" '.','/' rotate object on z-axis\n" +
 				" click and drag the mouse to change direction";

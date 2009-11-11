@@ -1,5 +1,9 @@
 2009-11-11  Scott Ellington  <scott.ellington@gmail.com>
 
+	* ThreeDSFile.cs: allow read of 3ds exported from blender
+
+2009-11-11  Scott Ellington  <scott.ellington@gmail.com>
+
 	* Program.cs: mistake in instructions
 
 2009-11-09  Scott Ellington  <scott.ellington@gmail.com>

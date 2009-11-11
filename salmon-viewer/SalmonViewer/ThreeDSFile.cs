@@ -205,14 +205,15 @@ namespace SalmonViewer
 
 					case Groups.C_OBJECTINFO:
 
-						ThreeDSChunk obj_chunk = new ThreeDSChunk ( reader );
-
 						// not sure whats up with this chunk
-						SkipChunk ( obj_chunk );
-						child.BytesRead += obj_chunk.BytesRead;
-
-						ProcessChunk ( child );
-
+						//SkipChunk ( obj_chunk );
+						//child.BytesRead += obj_chunk.BytesRead;
+						//ProcessChunk ( child );
+					
+						// blender 3ds export (others?) uses this
+						// in the hierarchy of objects and materials
+						// so lets process the next (child) chunk
+					
 						break;					
 
 					case Groups.C_MATERIAL:

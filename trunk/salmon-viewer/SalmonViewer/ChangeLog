@@ -1,5 +1,11 @@
 2009-11-11  Scott Ellington  <scott.ellington@gmail.com>
 
+	* models:
+	* SalmonViewer.csproj:
+	* models/blendermonkey.3ds: add sample model
+
+2009-11-11  Scott Ellington  <scott.ellington@gmail.com>
+
 	* ThreeDSFile.cs: allow read of 3ds exported from blender
 
 2009-11-11  Scott Ellington  <scott.ellington@gmail.com>

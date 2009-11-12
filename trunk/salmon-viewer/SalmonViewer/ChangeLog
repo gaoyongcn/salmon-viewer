@@ -1,3 +1,8 @@
+2009-11-12  Scott Ellington  <scott.ellington@gmail.com>
+
+	* Entity.cs:
+	* ThreeDSFile.cs: fix issue #2
+
 2009-11-11  Scott Ellington  <scott.ellington@gmail.com>
 
 	* models:

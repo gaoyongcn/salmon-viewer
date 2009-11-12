@@ -20,8 +20,12 @@ Global
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = SalmonViewer\SalmonViewer.csproj
-		MonoDevelop.ChangeLogAddIn.ChangeLogInfo = $0
-		$0.policy = OneChangeLogInProjectRootDirectory
+		Policies = $0
+		$0.ChangeLogPolicy = $1
+		$1.UpdateMode = ProjectRoot
+		$1.MessageStyle = $2
+		$2.LineAlign = 0
+		$1.inheritsSet = Mono
 		name = salmon-viewer
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

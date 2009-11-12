@@ -1,3 +1,7 @@
+2009-11-12  Scott Ellington  <scott.ellington@gmail.com>
+
+	* salmon-viewer.sln: fix issue #2
+
 2009-11-09  scottell  <${AuthorEmail}>
 
 	* salmon-viewer.sln: hackish attempt at getting the model in

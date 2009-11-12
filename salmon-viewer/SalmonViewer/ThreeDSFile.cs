@@ -37,8 +37,30 @@ namespace SalmonViewer
 	/// </summary>
 	public class ThreeDSFile
 	{	
+		#region classes
 		
-#region Enums		
+		class ThreeDSChunk
+		{
+			public ushort ID;
+			public uint Length;
+			public int BytesRead;
+
+			public ThreeDSChunk ( BinaryReader reader )
+			{
+				// 2 byte ID
+				ID = reader.ReadUInt16();
+
+				// 4 byte length
+				Length = reader.ReadUInt32 ();
+
+				// = 6
+				BytesRead = 6; 
+			}
+		}
+		
+		#endregion
+		
+		#region Enums		
 		
 		enum Groups
 		{
@@ -62,9 +84,9 @@ namespace SalmonViewer
 			C_OBJECT_UV		= 0x4140
 		}
 
-#endregion		
+		#endregion		
 		
-#region Vars
+		#region Vars
 
 		Dictionary < string, Material > materials = new Dictionary < string, Material > ();
 		
@@ -74,7 +96,11 @@ namespace SalmonViewer
 		
 		double maxX, maxY, maxZ, minX, minY, minZ;
 		
-#endregion		
+		int version = -1;
+		
+		#endregion		
+		
+		#region public properties
 		
 		Model model = new Model ();
 		public Model Model {
@@ -125,9 +151,9 @@ namespace SalmonViewer
 			}
 		}
 		
-		int version = -1;
+		#endregion
 		
-#region Constructors		
+		#region Constructors		
 		
 		/// <summary>
 		/// Constructor
@@ -181,9 +207,9 @@ namespace SalmonViewer
 			}			
 		}
 
-#endregion		
+		#endregion		
 		
-#region Helper methods
+		#region Helper methods
 		
 		void ProcessChunk ( ThreeDSChunk chunk )
 		{
@@ -443,24 +469,33 @@ namespace SalmonViewer
 
 						Material mat;
 						if ( materials.TryGetValue ( name2, out mat ) )
-							e.material = mat;
+						{
+							//e.material = mat;
+							
+							MaterialFaces m = new MaterialFaces();
+							m.Material = mat;
+						
+							int nfaces = reader.ReadUInt16 ();
+							child.BytesRead += 2;
+							//Console.WriteLine ( nfaces );
+							m.Faces = new UInt16[nfaces];
+							
+							for ( int ii=0; ii<nfaces; ii++)
+							{
+								//Console.Write ( reader.ReadUInt16 () + " " );
+								m.Faces[ii] = reader.ReadUInt16 ();
+								child.BytesRead += 2;
+							}
+						
+							e.MaterialFaces.Add(m);
+						}
 						else
+						{
 							Console.WriteLine ( " Warning: Material '{0}' not found. ", name2 );
 							//throw new Exception ( "Material not found!" );
-
-						/*
-						   int nfaces = reader.ReadUInt16 ();
-						   child.BytesRead += 2;
-						   Console.WriteLine ( nfaces );
-
-						   for ( int ii=0; ii< nfaces+2; ii++)
-						   {
-						   Console.Write ( reader.ReadUInt16 () + " " );
-						   child.BytesRead += 2;
-
-						   }
-						   */
+							
 							SkipChunk ( child );
+						}
 					
 						break;
 
@@ -575,26 +610,6 @@ namespace SalmonViewer
 			return idcs;
 		}
 
-		class ThreeDSChunk
-		{
-			public ushort ID;
-			public uint Length;
-			public int BytesRead;
-
-			public ThreeDSChunk ( BinaryReader reader )
-			{
-				// 2 byte ID
-				ID = reader.ReadUInt16();
-
-				// 4 byte length
-				Length = reader.ReadUInt32 ();
-
-				// = 6
-				BytesRead = 6; 
-			}
-		}
-		
-#endregion
-		
+		#endregion
 	}
 }

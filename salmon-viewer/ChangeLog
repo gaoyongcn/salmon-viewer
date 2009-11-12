@@ -1,5 +1,9 @@
 2009-11-12  Scott Ellington  <scott.ellington@gmail.com>
 
+	* salmon-viewer.sln: bump version
+
+2009-11-12  Scott Ellington  <scott.ellington@gmail.com>
+
 	* salmon-viewer.sln: fix issue #2
 
 2009-11-09  scottell  <${AuthorEmail}>

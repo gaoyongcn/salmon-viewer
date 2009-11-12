@@ -1,3 +1,7 @@
+2009-11-12  Scott Ellington  <scott.ellington@gmail.com>
+
+	* SalmonViewer.Tests.csproj: bump version
+
 2009-11-09  scottell  <${AuthorEmail}>
 
 	* SalmonViewer.Tests.csproj: hackish attempt at getting the
